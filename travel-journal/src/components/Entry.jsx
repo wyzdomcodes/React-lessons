@@ -1,30 +1,28 @@
-import mountFuji from "../assets/mount-fuji-9.jpg";
-
-export default function Entry({img, cityName, link, name, date, text}) {
+export default function Entry({img, country, googleMapsLink, title, dates, text}) {
   return (
     <main className="flex gap-3.5 pt-20 px-16">
       <div className="">
         <img
           src={img.src}
           alt={img.alt}
-          className="rounded w-[250px] h-[250px]"
+          className="rounded w-[170px] h-[200px]"
         />
       </div>
       <div className="py-8 max-w-[600px]">
         <div className="flex items-center content-center">
           <h3 className="font-inter font-bold text-sm pr-6">
-            {cityName}
+            {country}
           </h3>
-          <a href="http://" className="text-sm underline text-gray-600">
-            {link}
+          <a href={googleMapsLink} className="text-sm underline text-gray-600">
+            View on Google Map
           </a>
         </div>
 
         <h2 className="pt-2 pb-4 font-bold font-inter text-3xl">
-          {name}
+          {title}
         </h2>
         <span className="font-bold font-inter pb-2 block text-sm">
-          {date}
+          {dates}
         </span>
         <p className="font-inter text-sm">{text}</p>
       </div>

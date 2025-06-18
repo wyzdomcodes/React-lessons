@@ -1,44 +1,28 @@
 import Header from "./components/Header";
 import Entry from "./components/Entry";
 import mountFuji from "./assets/mount-fuji-9.jpg";
-import RenderJokes from "./components/RenderJokes"
+// import RenderJokes from "./components/RenderJokes"
+import data from "./components/data";
 
 
 export default function App() {
+  const dataElements = data.map(entry => {
+    return <Entry
+        key={entry.id}
+        {...entry}
+        // img={d.img}
+        // cityName={d.country}
+        // link={d.googleMapsLink}
+        // name={d.title}
+        // date={d.dates}
+        // text={d.text}
+      />
+  })
   return (
     <>
       <Header />  
-      <RenderJokes />
-      <Entry
-        img={{src:mountFuji, alt: "Mount Fuji"}}
-        cityName="JAPAN"
-        link="View on google maps"
-        name="Mount Fuji"
-        date="12 Jan, 2021 - 24 Jan, 2021"
-        text="Mount Fuji is the tallest mountain in Japan, standing at 3,776 meters (12,380 feet).
-                    Mount Fuji is the single most popular tourist site in Japan,
-                    for both Japanese and foreign tourists."
-      />
-      <Entry
-        img={{src:mountFuji, alt: "Mount Fuji"}}
-        cityName="JAPAN"
-        link="View on google maps"
-        name="Mount Fuji"
-        date="12 Jan, 2021 - 24 Jan, 2021"
-        text="Mount Fuji is the tallest mountain in Japan, standing at 3,776 meters (12,380 feet).
-                    Mount Fuji is the single most popular tourist site in Japan,
-                    for both Japanese and foreign tourists."
-      />
-      <Entry
-        img={{src:mountFuji, alt: "Mount Fuji"}}
-        cityName="JAPAN"
-        link="View on google maps"
-        name="Mount Fuji"
-        date="12 Jan, 2021 - 24 Jan, 2021"
-        text="Mount Fuji is the tallest mountain in Japan, standing at 3,776 meters (12,380 feet).
-                    Mount Fuji is the single most popular tourist site in Japan,
-                    for both Japanese and foreign tourists."
-      />
+      {/* <RenderJokes /> */}
+      {dataElements}
     </>
   );
 }
