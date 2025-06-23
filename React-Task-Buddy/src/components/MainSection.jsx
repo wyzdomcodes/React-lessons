@@ -1,13 +1,39 @@
+import { useState } from "react";
 import TaskList from "./TaskList";
 import { tasklist } from "./Tasks";
-export default function Main() {
-    const tasks = tasklist.map(task => {
+function TaskSection({tasks}) {
+   return tasks.map(task => {
         return <TaskList 
         task={task.task}
         key={task.id}
         completed={task.completed}
         />
     })
+}
+export default function Main() {
+    const completedTasks = []
+    const incompleteTasks = []
+
+    tasklist.forEach(task => {
+        if(task.completed === true ) {
+            completedTasks.push({ task: task.task, completed: task.completed, id: task.id })
+        }
+        else {
+            incompleteTasks.push({ task: task.task, completed: task.completed, id: task.id })
+        }
+    })
+
+    const [tasks, setTasks] = useState(tasklist)
+
+    const displayAllTasks = () => {
+        setTasks(tasklist)
+    }
+    const displayCompletedTasks = () => {
+        setTasks(completedTasks)
+    }
+    const displayIncompleteTasks = () => {
+        setTasks(incompleteTasks)
+    }
 
   return (
     <main className="px-40 py-5">
@@ -34,18 +60,18 @@ export default function Main() {
       </form>
 
       <div className="flex justify-start gap-10 pb-3 px-4">
-        <button className="font-inter text-sm text-[#4A739C] focus:text-[#0D141C] focus:font-semibold focus:border-b-2 border-b-[#E5E8EB] pt-4 pb-[13px] cursor-pointer">
+        <button onClick={displayAllTasks} className="font-inter text-sm text-[#4A739C] focus:text-[#0D141C] focus:font-semibold focus:border-b-2 border-b-[#E5E8EB] pt-4 pb-[13px] cursor-pointer">
           All
         </button>
-        <button className="font-inter text-sm text-[#4A739C] focus:text-[#0D141C] focus:font-semibold focus:border-b-2 border-b-[#E5E8EB] pt-4 pb-[13px] cursor-pointer">
+        <button onClick={displayCompletedTasks} className="font-inter text-sm text-[#4A739C] focus:text-[#0D141C] focus:font-semibold focus:border-b-2 border-b-[#E5E8EB] pt-4 pb-[13px] cursor-pointer">
           Completed
         </button>
-        <button className="font-inter text-sm text-[#4A739C] focus:text-[#0D141C] focus:font-semibold focus:border-b-2 border-b-[#E5E8EB] pt-4 pb-[13px] cursor-pointer">
+        <button onClick={displayIncompleteTasks} className="font-inter text-sm text-[#4A739C] focus:text-[#0D141C] focus:font-semibold focus:border-b-2 border-b-[#E5E8EB] pt-4 pb-[13px] cursor-pointer">
           Incomplete
         </button>
       </div>
-
-      {tasks}
+      <TaskSection tasks={tasks}/>
+      <hr />
     </main>
   );
 }
