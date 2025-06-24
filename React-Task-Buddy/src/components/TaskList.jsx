@@ -19,5 +19,4 @@ export default function TaskList({task, completed}) {
 
         </div>
         )
-//   return <ul>{tasks}</ul>;
 }
