@@ -24,6 +24,7 @@ export default function Main() {
     })
 
     const [tasks, setTasks] = useState(tasklist)
+    const [task, setTask] = useState('')
 
     const displayAllTasks = () => {
         setTasks(tasklist)
@@ -34,6 +35,12 @@ export default function Main() {
     const displayIncompleteTasks = () => {
         setTasks(incompleteTasks)
     }
+    let nextId = 5
+    const handleAddTaskClick = () => {
+        setTasks([...tasks, {
+            task: task, id: nextId + 1, completed:false
+        }])
+    }
 
   return (
     <main className="px-40 py-5">
@@ -43,6 +50,8 @@ export default function Main() {
       <form>
         <div className="px-4 py-3 w-[480px] h-20">
           <input
+          value={task}
+          onChange={e => setTask(e.target.value)}
             type="text"
             name="addTask"
             placeholder="Add a new task"
@@ -51,6 +60,7 @@ export default function Main() {
         </div>
         <div className="px-4 py-3 flex items-center justify-center">
           <button
+          onClick={handleAddTaskClick}
             type="button"
             className="px-4 bg-[#0D80F2] rounded-xl text-[#F7FAFC] text-sm font-inter h-10 w-24"
           >
