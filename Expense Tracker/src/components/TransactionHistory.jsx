@@ -1,6 +1,8 @@
 import History from "./History";
 import wallet from "../assets/wallet.png";
-export default function TransactionHistory({ transactions }) {
+import deleteT from "../assets/delete.png";
+import note from "../assets/note.png";
+export default function TransactionHistory({ transactions, onHandleDelete, onEdit }) {
   return (
     <>
       <div className="px-4 pt-5 pb-3">
@@ -27,10 +29,10 @@ export default function TransactionHistory({ transactions }) {
       )}
       {transactions.length > 0 && (
         <History>
-          {transactions.map((transaction) => {
+          {transactions.map((transaction, index) => {
             return (
               <div
-                key={transaction.amount}
+                key={index}
                 className="flex justify-between items-center py-2 border-b border-b-[#DBDBE5]"
               >
                 <div className="">
@@ -50,12 +52,28 @@ export default function TransactionHistory({ transactions }) {
                     {transaction.date}
                   </span>
                 </div>
-                <div className="">
+                <div className="flex justify-between items-center gap-8">
                   <p className="text-[#121217] text-base/6">
                     {String(transaction.amount).includes("-")
                       ? `-$${String(transaction.amount).slice(1)}`
                       : `$${String(transaction.amount)}`}
                   </p>
+
+                  <div className="flex justify-between items-center gap-3">
+                    <button onClick={() => onEdit(index)} className="cursor-pointer transition duration-300 ease-in hover:bg-green-200 px-2 py-2 rounded-lg">
+                      <img src={note} alt="Edit button" className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => onHandleDelete(transaction.id)}
+                      className="cursor-pointer transition duration-300 ease-in hover:bg-red-200 px-2 py-2 rounded-lg"
+                    >
+                      <img
+                        src={deleteT}
+                        alt="Delete button"
+                        className="w-4 h-4"
+                      />
+                    </button>
+                  </div>
                 </div>
               </div>
             );

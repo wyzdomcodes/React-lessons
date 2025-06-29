@@ -1,24 +1,63 @@
 import balanceImage from "../assets/balance-img.png";
 import TransactionHistory from "./TransactionHistory";
+import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
 export default function MainSection() {
-  const [transactions, setTransactions] = useState([{description: "Salary", amount: 1200, date: "11-06-2025", type: "income"},
-    {description: "Food", amount: -200, date: "11-06-2025", type: "expense"},
-    {description: "rent", amount: -100, date: "11-06-2025", type: "expense"},
+  const [transactions, setTransactions] = useState([
+    {
+      description: "Salary",
+      amount: 1200,
+      date: "2025-06-11",
+      type: "income",
+      id: uuidv4(),
+    },
   ]);
+
+  
+  const [editMode, setEditMode] = useState(false);
+  const [editIndex, setEditIndex] = useState(null);
+
+  const handleEdit = (index) => {
+    const t = transactions[index];
+    // Dynamically pre-fill the form inputs with JavaScript
+    const form = document.getElementById("add-transaction");
+    if (form) {
+      form.description.value = t.description;
+      form.amount.value = Math.abs(t.amount);
+      form.date.value = t.date;
+      form.type.value = t.type;
+    }
+
+    setEditMode(true);
+    setEditIndex(index);
+  };
 
   function handleAddTransaction(formData) {
     const { description, amount, date, type } = Object.fromEntries(formData);
     let parsedAmount = Number(amount);
-  if (type === "expense") {
-    parsedAmount = -Math.abs(parsedAmount); // Ensure it's negative
-  } else {
-    parsedAmount = Math.abs(parsedAmount); // Ensure it's positive
-  }
-    setTransactions((prev) => [
+    if (type === "expense") {
+      parsedAmount = -Math.abs(parsedAmount); // Ensure it's negative
+    } else {
+      parsedAmount = Math.abs(parsedAmount); // Ensure it's positive
+    }
+
+    if (editMode) {
+      const updated = [...transactions];
+      updated[editIndex] = { description, amount: parsedAmount, date, type };
+      setTransactions(updated);
+      setEditMode(false);
+      setEditIndex(null);
+    } else {
+      setTransactions((prev) => [
       ...prev,
-      { description, amount: parsedAmount, date, type }
+      { description, amount: parsedAmount, date, type, id: uuidv4() },
     ]);
+    }
+    
+  }
+
+  function handleDelete(id) {
+    setTransactions(transactions.filter((t) => t.id !== id));
   }
   const balance = transactions.reduce((acc, t) => acc + t.amount, 0);
   const income = transactions
@@ -42,17 +81,21 @@ export default function MainSection() {
           <div className="bg-[#F0F2F5] flex-1 p-6 rounded-lg">
             <h3 className="text-sm/6 text-[#121217]">Income</h3>
             <p className="text-lg font-bold text-[#121217]">
-              {income > 0 ? '$' + income : "$0.00"}
+              {income > 0 ? "$" + income : "$0.00"}
             </p>
           </div>
           <div className="bg-[#F0F2F5] flex-1 p-6 rounded-lg">
             <h3 className="text-sm/6 text-[#121217]">Expenses</h3>
             <p className="text-lg font-bold text-[#121217]">
-              {totalExpenses > 0 ? '$'+ totalExpenses : "$0.00"}
+              {totalExpenses > 0 ? "$" + totalExpenses : "$0.00"}
             </p>
           </div>
         </div>
-        <TransactionHistory transactions={transactions} />
+        <TransactionHistory
+          transactions={transactions}
+          onHandleDelete={handleDelete}
+          onEdit={handleEdit}
+        />
         <div className="px-4 pt-5 pb-3">
           <h2 className="text-[22px]/7 font-bold text-[#121217]">
             Add Transaction
