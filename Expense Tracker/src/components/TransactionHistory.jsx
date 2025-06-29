@@ -2,7 +2,11 @@ import History from "./History";
 import wallet from "../assets/wallet.png";
 import deleteT from "../assets/delete.png";
 import note from "../assets/note.png";
-export default function TransactionHistory({ transactions, onHandleDelete, onEdit }) {
+export default function TransactionHistory({
+  transactions,
+  onHandleDelete,
+  onEdit,
+}) {
   return (
     <>
       <div className="px-4 pt-5 pb-3">
@@ -32,7 +36,7 @@ export default function TransactionHistory({ transactions, onHandleDelete, onEdi
           {transactions.map((transaction, index) => {
             return (
               <div
-                key={index}
+                key={transaction.id}
                 className="flex justify-between items-center py-2 border-b border-b-[#DBDBE5]"
               >
                 <div className="">
@@ -60,7 +64,10 @@ export default function TransactionHistory({ transactions, onHandleDelete, onEdi
                   </p>
 
                   <div className="flex justify-between items-center gap-3">
-                    <button onClick={() => onEdit(index)} className="cursor-pointer transition duration-300 ease-in hover:bg-green-200 px-2 py-2 rounded-lg">
+                    <button
+                      onClick={() => onEdit(index)}
+                      className="cursor-pointer transition duration-300 ease-in hover:bg-green-200 px-2 py-2 rounded-lg"
+                    >
                       <img src={note} alt="Edit button" className="w-4 h-4" />
                     </button>
                     <button

@@ -13,7 +13,6 @@ export default function MainSection() {
     },
   ]);
 
-  
   const [editMode, setEditMode] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
 
@@ -43,17 +42,16 @@ export default function MainSection() {
 
     if (editMode) {
       const updated = [...transactions];
-      updated[editIndex] = { description, amount: parsedAmount, date, type };
+      updated[editIndex] = { description, amount: parsedAmount, date, type, id: uuidv4() };
       setTransactions(updated);
       setEditMode(false);
       setEditIndex(null);
     } else {
       setTransactions((prev) => [
-      ...prev,
-      { description, amount: parsedAmount, date, type, id: uuidv4() },
-    ]);
+        ...prev,
+        { description, amount: parsedAmount, date, type, id: uuidv4() },
+      ]);
     }
-    
   }
 
   function handleDelete(id) {
@@ -166,7 +164,7 @@ export default function MainSection() {
               type="submit"
               className="cursor-pointer h-10 px-4 rounded-lg bg-[#616BE8] font-bold text-sm/5.5 text-[#FFFFFF]"
             >
-              Add trasaction
+              {editMode ? "Edit Transaction" : "Add trasaction"}
             </button>
           </div>
         </form>
