@@ -1,4 +1,4 @@
-export default function IngredientsList ({onGetRecipe, ingredients}) {
+export default function IngredientsList ({onGetRecipe, ingredients, ref}) {
     const ingredientsElement = ingredients.map((ingredient) => {
     return <li key={ingredient}>{ingredient}</li>;
   });
@@ -11,7 +11,7 @@ export default function IngredientsList ({onGetRecipe, ingredients}) {
 
           {ingredients.length >= 4 ? (
             <div className="bg-gray-100 flex items-center justify-between px-10 py-6 rounded">
-              <div className="">
+              <div ref={ref} className="">
                 <h3 className="pb-5 font-inter text-xl font-semibold">
                   Ready for a recipe?
                 </h3>

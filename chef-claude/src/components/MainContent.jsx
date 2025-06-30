@@ -2,15 +2,23 @@ import { useState } from "react";
 import ClaudeRecipe from "./ClaudeRecipe";
 import IngredientsList from "./IngredientsList";
 import { getAiRecipe } from "../ai";
+import { useRef } from "react";
+import { useEffect } from "react";
 
 export default function MainContent() {
   const [ingredients, setIngredient] = useState([]);
   const [recipe, setRecipe] = useState('');
+  const newRecipe = useRef(null)
 
+  useEffect(() => {
+    if(newRecipe.current !== null && recipe !== '') {
+      console.log(newRecipe)
+    return newRecipe.current.scrollIntoView({behavior: "smooth"})
+    }
+  }, [recipe])
   async function handleGetRecipe() {
     const aiRecipe = await getAiRecipe(ingredients)
     setRecipe(aiRecipe);
-    console.log(recipe, "Done")
   }
 
   const addIngredient = (formData) => {
@@ -39,7 +47,7 @@ export default function MainContent() {
         </button>
       </form>
 
-      {ingredients.length > 0 && <IngredientsList onGetRecipe = {handleGetRecipe} ingredients= {ingredients}/>}
+      {ingredients.length > 0 && <IngredientsList onGetRecipe = {handleGetRecipe} ingredients= {ingredients} ref={newRecipe}/>}
 
       {recipe && <ClaudeRecipe recipe= {recipe}/>}
     </main>
