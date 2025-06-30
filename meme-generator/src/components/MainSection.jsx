@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function MainSection() {
   const [meme, setMeme] = useState({
@@ -7,14 +7,27 @@ export default function MainSection() {
     bottomText: "Walk into Mordor",
   });
 
+  const [allMemes, setallMemes] = useState([])
+  useEffect(() => {
+    fetch('https://api.imgflip.com/get_memes')
+    .then(res => res.json())
+    .then(data => setallMemes(data.data.memes))
+  }, [])
+
   function handleChange(event) {
     const {value, name} = event.currentTarget
     setMeme({...meme, [name]: value})
   }
+
+  function getNewMemeImage() {
+  let random = Math.floor(Math.random() * allMemes.length)
+    const randomUrl = allMemes[random].url
+    setMeme({...meme, imageUrl: randomUrl})
+  }
   return (
-    <main className="px-40 py-8 flex flex-col">
+    <main className="py-8 flex flex-col items-center justify-center">
       <div className="flex flex-col justify-between pb-4">
-        <div className="flex justify-between pb-5">
+        <div className="flex justify-between gap-10 pb-5">
           <label>
             Top Text
             <input
@@ -39,7 +52,7 @@ export default function MainSection() {
             />
           </label>
         </div>
-        <button className="bg-purple-700 text-white px-4 py-3 rounded cursor-pointer">
+        <button onClick={getNewMemeImage} className="bg-purple-700 text-white px-4 py-3 rounded cursor-pointer">
           Get a new meme image 🖼
         </button>
       </div>
