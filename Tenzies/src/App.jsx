@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { v4 as uuidv4 } from "uuid";
 import Confetti from 'react-confetti'
 import Die from "./components/Die"
 
 function App() {
-
+  const buttonRef = useRef(null)
     function generateAllNewDice() {
   const numbers = []
 
@@ -16,6 +16,11 @@ function App() {
     }
     const [values, setValues] = useState(generateAllNewDice())
     let gameWon = false
+    useEffect(() => {
+      if(gameWon) {
+      buttonRef.current.focus()
+      }
+    }, [gameWon])
 
     if(values.every(val => val.value === values[0].value)
        && 
@@ -37,7 +42,7 @@ function App() {
       }))
       
       } else {
-        gameWon = false
+        // gameWon = false
         return setValues(getNewDice)
       }
     }
@@ -60,7 +65,7 @@ function App() {
             return <Die key={index} value={value} pick={handleDicePick}/>
           })}
         </div>
-          <button onClick={handleRollDice} className="cursor-pointer bg-indigo-700 px-5 py-2 rounded text-white text-xl">{gameWon ? "New game" : "Roll"}</button>
+          <button ref={buttonRef} onClick={handleRollDice} className="cursor-pointer bg-indigo-700 px-5 py-2 rounded text-white text-xl">{gameWon ? "New game" : "Roll"}</button>
       </main>
     </>
   )
