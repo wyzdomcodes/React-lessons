@@ -28,7 +28,8 @@ function App() {
   }
 
   function handleNewGame() {
-    getNewWord();
+    let random = Math.floor(Math.random() * words.length);
+    setCurrentWord(words[random])
     setGuessedAlphabet([]);
     setGuessedWord([]);
     setWrongGuessedWord([]);
@@ -144,9 +145,10 @@ function App() {
                   key={index}
                   className={clsx(
                     "w-10 h-12 flex items-center justify-center border-b-4 border-gray-600 bg-[#1E1E1E] text-2xl font-bold",
+                    isGameOver && !guessedAlphabet.includes(letter) && "text-red-700"
                   )}
                 >
-                  {guessedAlphabet.includes(letter) ? letter : ""}
+                  {!isGameOver && guessedAlphabet.includes(letter) ? letter : ""} {isGameOver && letter}
                 </span>
               );
             })}
